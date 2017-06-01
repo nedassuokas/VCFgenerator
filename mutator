@@ -1,0 +1,121 @@
+#!/usr/bin/python
+
+#Nedas Suokas, Bioinformatika IV kursas
+#Python programa, kuri atlieka insercijas arba delecijas
+#tam tikrose vietose, kurios nurodomos argumentuose.
+#1-as argumentas - input failas
+#2-as argumentas - delecija/insercija (1-delecija, 2-insercija)
+#3-as argumentas - vieta, kurioje ivyksta mutacija
+#4-as argumentas - mutacijos ilgis
+
+#Taip pat, programa mazdaug kas 1000 nukleotidu pakeicia
+#po viena nukleotida
+
+#Programos paleidimo pavyzdys:
+#./mutator inputs/Req_seq.fasta 1 15422 25
+
+import sys
+import random
+
+all_seq = ''
+
+#Reading**********
+
+with open(sys.argv[1], 'r') as my_file:
+    file = my_file.readlines()
+file = [x.strip() for x in file] 
+
+all_seq = ''.join(file)
+#****************
+
+del_or_ins = int(sys.argv[2])
+position = int(sys.argv[3])
+length = int(sys.argv[4])
+
+#****************
+
+def insertion (all_seq, ins_position, ins_length):
+	nucleotides = ['A', 'T', 'C', 'G'] 
+	insertion_seq = ''
+	for i in range(ins_length):
+		insertion_seq += random.choice(nucleotides)
+	all_seq = all_seq[:ins_position] + insertion_seq + all_seq[ins_position:]
+	return all_seq
+
+
+def deletion (all_seq, del_position, del_length):
+	all_seq = all_seq[:del_position] + all_seq[del_position+del_length:]
+	return all_seq
+
+	
+#****************
+del_or_ins_positions = range(position,position+length+1)
+
+position_to_replace = 0
+
+
+if del_or_ins == 1:
+	all_seq = deletion(all_seq, position, length)
+elif del_or_ins == 2:
+	all_seq = insertion(all_seq, position, length)
+else:
+	print 'Blogas antras argumentas (1 - delecija, 2 - insercija).'
+	sys.exit()
+	
+
+dna_seq = ''
+
+x=0
+y=50000
+
+while True:
+	
+	new_array = all_seq[x:y]
+	#print x,y, '/', len(all_seq)
+	
+	position_to_replace = 0
+
+	while True:
+		number = random.randint(900,1100)
+
+		if number+position_to_replace+x in del_or_ins_positions:
+			while number+position_to_replace+x in del_or_ins_positions:
+				number = random.randint(900,1100)
+	
+		position_to_replace += number
+		
+		#print position_to_replace+x
+		if len(new_array) < position_to_replace:
+			break
+		
+		nucleotides = ['A', 'T', 'C', 'G'] 
+	
+		replacement = random.sample(nucleotides, 1)
+	
+		if str(replacement[0]) == new_array[position_to_replace-1:position_to_replace]:
+			while str(replacement[0]) == new_array[position_to_replace-1:position_to_replace]:
+				replacement = random.sample(nucleotides, 1)
+	
+		new_array = new_array[:position_to_replace-1] + str(replacement[0]) + new_array[position_to_replace:]
+	dna_seq += new_array
+	
+	if y >= len(all_seq):
+		break
+	
+	if y+50000 > len(all_seq):
+		x=y
+		y = len(all_seq)
+	else:
+		x=y
+		y=y+50000
+	
+
+splited_all_seq = [dna_seq[i:i+50] for i in range(0, len(dna_seq), 50)]
+#print splited_all_seq
+
+print '>Mutation_fasta'
+
+for i in splited_all_seq:
+	print i
+	
+	

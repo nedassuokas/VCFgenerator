@@ -1,25 +1,23 @@
-Samtools (Version: 0.1.19-96b5f2294a):
-sudo apt-get install samtools
+#Samtools (Version: 0.1.19-96b5f2294a):
+> sudo apt-get install samtools
 
-Bwa (Version: 0.7.5a-r405):
-sudo apt-get install bwa
+#Bwa (Version: 0.7.5a-r405):
+> sudo apt-get install bwa
 
-Conda installation:
-https://conda.io/docs/install/quick.html#linux-miniconda-install
+#Conda installation:
+#https://conda.io/docs/install/quick.html#linux-miniconda-install
 
-Next:
-conda install -c bioconda picard=2.9.2
-conda install -c bioconda delly=0.7.7
-conda install -c bioconda gatk=3.7
+#Next:
+> conda install -c bioconda picard=2.9.2
+> conda install -c bioconda delly=0.7.7
+> conda install -c bioconda gatk=3.7
+> gatk-register path-to-MakeVCF/MakeVCF/GenomeAnalysisTK-3.7-0.tar.bz2
 
-gatk-register path-to-MakeVCF/MakeVCF/GenomeAnalysisTK-3.7-0.tar.bz2
+#In MakeVCF folder:
+> ./make_vcf 1_ARGV 2_ARGV 3_ARGV
 
+#1_ARGV - mutation (1-deletion, 2-insertion)
+#2_ARGV - mutation position
+#3_ARGV - mutation length
 
-In MakeVCF folder:
-./make_vcf 1_ARGV 2_ARGV 3_ARGV
-
-1_ARGV - mutation (1-deletion, 2-insertion)
-2_ARGV - mutation position
-3_ARGV - mutation length
-
-Results will be generated in VCF folder.
+#Results will be generated in VCF folder.

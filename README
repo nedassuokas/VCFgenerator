@@ -24,4 +24,6 @@
 #2_ARGV - mutation position
 #3_ARGV - mutation length
 
+#Example ./make_vcf 1 123456 55
+
 #Results will be generated in VCF folder.
